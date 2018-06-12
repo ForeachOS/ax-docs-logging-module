@@ -1,0 +1,167 @@
+= Method logging
+
+LoggingModule provides some basic infrastructure that allows other Across modules to enable method logging.  All method
+ calls with a duration longer than a configured minimum will be logged.  Method logging is achieved by enhancing
+ the beans using http://docs.spring.io/spring/docs/current/spring-framework-reference/html/aop.html[AOP].
+
+If method logging is enabled, LoggingModule will scan all other modules for an extension configuration class called
+ `MethodLoggingConfiguration`.  This configuration class should be located in the *extensions* package relative to the module class.
+ The configuration will usually provide a `MethodLogger` bean that extends `MethodLoggerAdapter`.
+ Due to possible limitations of the proxying mechanism, it is the responsibility of the modules to define support
+  for method logging.
+
+Using method logging can be a useful alternative for finding performance bottlenecks if more specialized
+ profiling tools are not available.
+
+== Configuration
+
+Method logging must be activated when configuring the LoggingModule.
+Activating method logging will activate the module specific logging configurations.
+Modules can define one or more `MethodLogger` instances reponsible for logging certain types of method calls (eg. repository calls).
+Most modules create a single `MethodLogger` with the same name as the module itself.
+
+.Example logging all methods with a duration of 75ms or more
+[source,text,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+logging.method.enabled=true
+logging.method.default-minimum-duration=75
+----
+
+More advanced configuration can be done by manually setting an `MethodLogConfiguration` instance.
+The `MethodLogConfiguration` allows you to configure the minimum duration for method calls on a global or per-`MethodLogger` level.
+
+.Enabling method logging manually for all methods exceeding 15ms
+[source,java,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+LoggingModule loggingModule = new LoggingModule();
+loggingModule.setProperty( LoggingModuleSettings.METHOD_LOG_ENABLED, true );
+MethodLogConfiguration methodLogConfiguration = MethodLogConfiguration.all( 15 );
+loggingModule.setProperty( LoggingModuleSettings.METHOD_LOG_CONFIGURATION, methodLogConfiguration );
+----
+
+WARNING: Method logging has a performance impact and enabling global method logging with a very small minimum duration can result in huge log files on a busy system.
+
+== Logging output
+
+A method log entry is a simple tab-separated log message sent to a http://www.slf4j.org/[SLF4J] logger.
+The logger name is _com.foreach.across.modules.logging.method.MethodLogger_ suffixed with the method logger name (eg: _com.foreach.across.modules.logging.method.MethodLogger.MyModule_).
+
+A tab-separated log message contains the following fields:
+
+* Method level
+* Method being executed
+* Duration (ms)
+
+NOTE: Using tab-separated output makes it very easy to import log-files for analysis in external tools like Microsoft Excel.
+
+=== Method level
+
+Method level attempts to give an indication about possible optimization targets.
+A method level of 1 means this is the first logged method to exceed the minimum duration.
+In other words: the method call is not composed of other methods that match the logging rules and have exceeded the minimum duration.
+When investigating performance, the lowest method level calls are usually a good place to start.
+
+The method level calculation is considered experimental.
+
+=== Logback configuration
+
+The following section provides a common {logback-url}[Logback] example for configuration of method logging, and the resulting output.
+
+.Example logback configuration for method logging with request logging enabled
+[source,xml,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="methods" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{ISO8601}\t[%X{requestId}]\t%t\t%logger{0}\t%m%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.foreach.across.modules.logging.method.MethodLogger" level="info" additivity="false">
+		<appender-ref ref="methods"/>
+	</logger>
+</configuration>
+----
+
+.Example log statement
+[source,text,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+2015-08-29 16:47:53,662	[3b0d69cb-9e99-4c02-ae44-65a192f0e0d9]	http-apr-8079-exec-6	MyModule	1	mymodule.services.SomeService.createItem	163
+----
+
+.Anatomy of the log statement
+[cols="2*"]
+|===
+
+|*Timestamp*
+|2015-08-29 16:47:53,662
+
+|*Request id*
+|3b0d69cb-9e99-4c02-ae44-65a192f0e0d9
+
+|*Thread*
+|http-apr-8079-exec-6
+
+|*Logger*
+|MyModule
+
+|*Method level*
+|1
+
+|*Method*
+|mymodule.services.SomeService.createItem
+
+|*Duration*
+|163
+
+|===
+
+== Creating a method logger
+A module can support method logging by providing an extension configuration called `MethodLoggingConfiguration`.
+The configuration will only be loaded if method logging on the LoggingModule is enabled.
+
+Most often it is enough for a module to define a single `MethodLoggerAdapter` bean that defines all methods to be intercepted for logging.
+The adapter class ensures that the LoggingModule configuration features are supported and the log messages are in the right format.
+
+.com.mymodule.extensions.MethodLoggingConfiguration
+[source,java,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+@Configuration
+@EnableAspectJAutoProxy(proxyTargetClass = true)
+@SuppressWarnings("unused")
+public class MethodLoggingConfiguration
+{
+	@Bean
+	public MethodExecutionLogger methodExecutionLogger() {
+		return new MethodExecutionLogger();
+	}
+
+	@Aspect
+	static class MethodExecutionLogger extends MethodLoggerAdapter
+	{
+		public MethodExecutionLogger() {
+			super( MyModule.NAME );
+		}
+
+		@Around("serviceMethod() || repositoryMethod()")
+		@Override
+		protected Object proceedAndLogExecutionTime( ProceedingJoinPoint point ) throws Throwable {
+			return super.proceedAndLogExecutionTime( point );
+		}
+
+		@Pointcut("execution(* com.mymodule.services..*.*(..))")
+		public void serviceMethod() {
+		}
+
+		@Pointcut("execution(* com.mymodule.repositories..*.*(..))")
+		public void repositoryMethod() {
+		}
+	}
+}
+----

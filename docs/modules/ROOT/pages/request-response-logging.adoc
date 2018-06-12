@@ -1,0 +1,58 @@
+= Request/response debug logging
+
+NOTE: Only available if AcrossWebModule is present.
+
+LoggingModule also supports a detailed request/response logging for debugging purposes.
+It can be used to log the full request and response, including body and headers.
+Request/response debug logging will wrap the incoming request and outgoing response.
+
+WARNING: Using the request/response debug logging has a negative impact on performance and can cause side effects in rare cases.
+Use it only for temporary debugging of specific requests, preferably in a non-production environment.
+
+LoggingModule comes with a set of debug controllers that allow you to view the logs and change the logging settings for specific request paths.
+
+== Configuration
+
+Before request/response logging is possible, it should first be enabled (*logging.requestResponse.enabled* property).
+
+If request/response logging is enabled, it can still be either _active_ or _paused_.
+If logging is not active, no data will be stored and requests/responses will not be wrapped, performance impact will be negligable.
+The active state can be controlled through the *logging.requestResponse.paused* property or at runtime via the <<request-response-debug-controllers,debug controllers>>.
+
+Configuration of request/response logging can be done through properties.
+
+.Activating request/response logging
+[source,text,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+logging.request-response.enabled=true
+----
+
+Different properties allow you to customize parameters like maximum log entries to keep (defaults to 100), or the paths to include for logging.
+More advanced configuration can be done through specifying a `RequestResponseLogConfiguration` instance (*logging.requestResponse.configuration* property).
+
+Additional configuration options include:
+
+* to which servlets the filter should apply (defaults to all)
+* the path patterns that requests should match before they are logged
+
+If {debug-web-module-url}[DebugWebModule] is present, the <<request-response-debug-controllers,debug controllers>> allow runtime modifications of the path patterns as well.
+
+.Enabling request/response logging for all api requests
+[source,java,indent=0]
+[subs="verbatim,quotes,attributes"]
+----
+LoggingModule loggingModule = new LoggingModule();
+loggingModule.setProperty( LoggingModuleSettings.REQUEST_RESPONSE_LOG_ENABLED, true );
+RequestResponseLogConfiguration logConfiguration = new RequestResponseLogConfiguration();
+logConfiguration.setIncludedPathPatterns( Arrays.asList( "/api/**" ) );
+loggingModule.setProperty( LoggingModuleSettings.REQUEST_RESPONSE_LOG_CONFIGURATION, logConfiguration );
+----
+
+[[request-response-debug-controllers]]
+== Debug controllers
+NOTE: Only available if {debug-web-module-url}[DebugWebModule] is present.
+
+If request/response debug logging is enabled, LoggingModule adds a subsection *Request - response* to the *Logging* section.
+The *Settings* controller allows you to update the path settings that requests should match before their details are logged.
+The *Overview* controller allows you to pause/activate the logging, as well as browse all log entries.

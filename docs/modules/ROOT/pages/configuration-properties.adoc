@@ -1,0 +1,96 @@
+= Module settings
+
+|===
+|Property |Type |Description |Default
+
+|logging.method.enabled
+|`boolean`
+|Should method logging extensions in modules be loaded? +
+|_false_
+
+|logging.method.default-minimum-duration
+|`int`
+|Number of milliseconds a method should take before it will be logged.
+|75
+
+|logging.method.configuration
+|`MethodLogConfiguration.class`
+|Advanced configuration settings for method logging.
+|_null_
+
+|logging.request.logger
+|`RequestLogger.class`
+|Should request logging be disabled, or enabled as filter or servlet?
+|_RequestLogger.FILTER_
+
+|logging.request.excluded-path-patterns
+|`Collection<String>`
+|Path patterns that should be excluded from request logging.
+|
+
+|logging.request.included-path-patterns
+|`Collection<String>`
+|Path patterns that should be included for request logging.
+|_all_
+
+|logging.request.servlet-name-filter-mappings
+|`Collection<String>`
+|Servlet names to which the request logger should be applied (if filter).
+|
+
+|logging.request.url-filter-mappings
+|`Collection<String>`
+|Servlet URL patterns to which the request logger should be applied (if filter).
+|/*
+
+|logging.request.logger-level-threshold
+|`LoggerLevelThreshold.class`
+|Configure custom log levels depending on request duration.
+|_null_
+
+|logging.request.configuration
+|`RequestLoggerConfiguration.class`
+|Advanced configuration settings for request logging.
+|_null_
+
+|logging.request-response.enabled
+|`boolean`
+|Should request/response debug logging be possible?
+|_false_
+
+|logging.request-response.paused
+|`boolean`
+|Should request/response debug logging be paused?
+|_false_
+
+|logging.request-response.max-entries
+|`int`
+|Number of request/response log entries that should be kept in memory.
+|100
+
+|logging.request-response.excluded-path-patterns
+|`Collection<String>`
+|Path patterns that should be excluded from request/response logging.
+| +++/debug/**+++,+++/across/**+++,+++/**/login+++
+
+|logging.request-response.included-path-patterns
+|`Collection<String>`
+|Path patterns that should be included for request/response logging.
+|_all_
+
+|logging.request-response.servlet-name-filter-mappings
+|`Collection<String>`
+|Servlet names to which the request/response logger should be applied (if filter).
+|
+
+|logging.request-response.url-filter-mappings
+|`Collection<String>`
+|Servlet URL patterns to which the request/response logger should be applied (if filter).
+|/*
+
+|logging.request-response.configuration
+|`RequestResponseLogConfiguration.class`
+|Advanced configuration settings for request/response debug logging.
+|_null_
+
+|===

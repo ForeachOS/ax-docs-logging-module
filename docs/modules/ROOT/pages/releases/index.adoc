@@ -1,0 +1,40 @@
+= LoggingModule releases
+
+[[module-artifact]]
+== Artifact
+
+[source,xml]
+----
+<dependencies>
+    <dependency>
+        <groupId>com.foreach.across.modules</groupId>
+        <artifactId>logging-module</artifactId>
+    </dependency>
+</dependencies>
+----
+
+== Release notes
+
+UserModule follows a https://semver.org[semantic versioning] scheme.
+
+* xref:releases/1.x.adoc#1-1-0[1.1.0]
+
+[[module-dependencies]]
+== Module dependencies
+
+|===
+|Module |Type |Description
+
+|AcrossWebModule
+|optional
+|Activates support for <<request-logging,request logging>> and <<request-response-logging,request/response debug logging>>.
+
+|{debug-web-module-url}[DebugWebModule]
+|optional
+|Enables the debug controllers for <<logger-management,logger management>> and <<request-response-debug-controllers,request/response logging>>.
+
+|{application-info-module-url}[ApplicationInfoModule]
+|extension
+|Will use the configured application instance id as _applicationInstanceId_.
+
+|===
