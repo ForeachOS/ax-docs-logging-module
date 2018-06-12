@@ -1,4 +1,5 @@
 = Method logging
+include::{partialsdir}/_attributes.adoc[]
 
 LoggingModule provides some basic infrastructure that allows other Across modules to enable method logging.  All method
  calls with a duration longer than a configured minimum will be logged.  Method logging is achieved by enhancing
@@ -71,7 +72,6 @@ The following section provides a common {logback-url}[Logback] example for confi
 
 .Example logback configuration for method logging with request logging enabled
 [source,xml,indent=0]
-[subs="verbatim,quotes,attributes"]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>

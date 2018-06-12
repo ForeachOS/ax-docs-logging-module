@@ -29,11 +29,11 @@ UserModule follows a https://semver.org[semantic versioning] scheme.
 |optional
 |Activates support for <<request-logging,request logging>> and <<request-response-logging,request/response debug logging>>.
 
-|{debug-web-module-url}[DebugWebModule]
+|{url-DebugWebModule}[DebugWebModule]
 |optional
 |Enables the debug controllers for <<logger-management,logger management>> and <<request-response-debug-controllers,request/response logging>>.
 
-|{application-info-module-url}[ApplicationInfoModule]
+|{url-ApplicationInfoModule}[ApplicationInfoModule]
 |extension
 |Will use the configured application instance id as _applicationInstanceId_.
 

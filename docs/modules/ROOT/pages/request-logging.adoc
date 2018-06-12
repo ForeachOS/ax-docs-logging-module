@@ -1,4 +1,5 @@
 = Request logging
+include::{partialsdir}/_attributes.adoc[]
 
 NOTE: Only available if AcrossWebModule is present.
 
@@ -44,7 +45,7 @@ requestId::
 A generated id that uniquely identifies the request.  By adding the _requestId_ to every log appender, log statements can be traced back to a specific request.
 
 applicationInstanceId::
-A configured value identifying the application instance.  Only if the {application-info-module-url}[ApplicationInfoModule] is active.
+A configured value identifying the application instance.  Only if the {url-ApplicationInfoModule}[ApplicationInfoModule] is active.
 
 == Request-Reference
 The unique _requestId_ is added to every response as a *Request-Reference* header.
@@ -73,7 +74,6 @@ The following section provides a common {logback-url}[Logback] example for confi
 
 .Example logback configuration for request logging
 [source,xml,indent=0]
-[subs="verbatim,quotes,attributes"]
 ----
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
@@ -91,7 +91,6 @@ The following section provides a common {logback-url}[Logback] example for confi
 
 .Example log statement
 [source,text,indent=0]
-[subs="verbatim,quotes,attributes"]
 ----
 2015-11-02 12:58:15,212	[5f18be5e-5b64-4c3a-9843-740f16c32641]	http-apr-8080-exec-4	DEBUG	127.0.0.1	GET	http://localhost:8080/logging/debug/across/browser/info/0	/debug/across/browser/info/0	/debug/across/browser/info/{index}	AcrossInfoController.showContextInfo(List,int,Model)	th/debugweb/layouts/acrossBrowser	200	784
 ----
@@ -125,7 +124,7 @@ The following section provides a common {logback-url}[Logback] example for confi
 |/debug/across/browser/info/0
 
 |*Request mapping*
-|/debug/across/browser/info/{index}
+|/debug/across/browser/info/\{index}
 
 |*Handler name*
 |AcrossInfoController.showContextInfo(List,int,Model)

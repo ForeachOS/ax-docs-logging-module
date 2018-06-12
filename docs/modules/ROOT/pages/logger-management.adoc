@@ -1,6 +1,7 @@
 = Logger management
+include::{partialsdir}/_attributes.adoc[]
 
-NOTE: Only available if {debug-web-module-url}[DebugWebModule] is present.
+NOTE: Only available if {url-DebugWebModule}[DebugWebModule] is present.
 
 LoggingModule adds a debug controller giving an overview of all {logback-url}[Logback] configured loggers and appenders.
  The log level for any logger can be changed at runtime.  The controller can be accessed through debug web menu

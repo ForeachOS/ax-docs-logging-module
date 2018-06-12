@@ -36,7 +36,7 @@ Additional configuration options include:
 * to which servlets the filter should apply (defaults to all)
 * the path patterns that requests should match before they are logged
 
-If {debug-web-module-url}[DebugWebModule] is present, the <<request-response-debug-controllers,debug controllers>> allow runtime modifications of the path patterns as well.
+If {url-DebugWebModule}[DebugWebModule] is present, the <<request-response-debug-controllers,debug controllers>> allow runtime modifications of the path patterns as well.
 
 .Enabling request/response logging for all api requests
 [source,java,indent=0]
@@ -51,7 +51,7 @@ loggingModule.setProperty( LoggingModuleSettings.REQUEST_RESPONSE_LOG_CONFIGURAT
 
 [[request-response-debug-controllers]]
 == Debug controllers
-NOTE: Only available if {debug-web-module-url}[DebugWebModule] is present.
+NOTE: Only available if {url-DebugWebModule}[DebugWebModule] is present.
 
 If request/response debug logging is enabled, LoggingModule adds a subsection *Request - response* to the *Logging* section.
 The *Settings* controller allows you to update the path settings that requests should match before their details are logged.
