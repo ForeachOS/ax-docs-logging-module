@@ -1,5 +1,6 @@
 [[logging-elk]]
-== Bootstrapping an ELK-stack
+= Bootstrapping an ELK-stack
+
 ====
 Using this setup for providing an ELK stack is written for small applications.
 If you expect lots of logging, setup a custom ElasticSearch cluster yourself.
