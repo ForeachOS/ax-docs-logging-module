@@ -93,4 +93,19 @@
 |Advanced configuration settings for request/response debug logging.
 |_null_
 
+|logging.logstash.server
+|String
+|The scheme, host and port of the Logstash server. E.g. http://localhost:5000
+|
+
+|logging.kibana.server
+|String
+|The scheme, host and port of the Kibana server. E.g. http://localhost:5601
+|
+
+|logging.logstash.application
+|String
+|The name of the application that will be used for populating the application field within ElasticSearch
+|
+
 |===

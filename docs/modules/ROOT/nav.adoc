@@ -1,5 +1,6 @@
 * xref:index.adoc[Quick start]
 * xref:releases/index.adoc[Releases]
+** xref:releases/3.x.adoc[3.x]
 ** xref:releases/1.x.adoc[1.x]
 
 * xref:configuration-properties.adoc[Configuration properties]
@@ -8,3 +9,4 @@
 * xref:method-logging.adoc[Method logging]
 * xref:request-logging.adoc[Web request logging]
 * xref:request-response-logging.adoc[Request/response logging]
+* xref:chap-elk.adoc[Use ELK stack for logging]
