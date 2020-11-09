@@ -1,5 +1,5 @@
 name: logging-module
 title: "Module: Logging"
-version: master
+version: 3.1.0-SNAPSHOT
 nav:
 - modules/ROOT/nav.adoc
